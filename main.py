@@ -1,4 +1,3 @@
-
 type = []
 #car, truck, suv
 number_doors = []
@@ -47,8 +46,3 @@ while ez_search:
 
          
 print("Thank you for using EZ Auto Search!")
-    
-    # try:
-    # vehicle_type = input("What type of vehicle would you like? Car, truck, or SUV?")
-    
-    # type.append(vehicle_type)    
