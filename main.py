@@ -1,7 +1,18 @@
-type = []
+from bs4 import BeautifulSoup
+from requests import get
+import pandas as pd
+import time
+import random
+
+headers = ({'User-Agent':
+            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit\
+/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36'})
+
+
+vehicle_type = []
 #car, truck, suv
 number_doors = []
-#2 door, 4 door
+#2D, 4D
 drive = []
 #awd, 2wd
 color = []
@@ -10,21 +21,21 @@ color = []
 ez_search = True
 
 while ez_search:
-    start_search =  input("\nWelcome to EZ Auto Search!\nI can help you find your new car! Are you ready to get started?\nType yes to begin and q anytime to quit. ")
+    start_search =  input("\nWelcome to EZ Auto Search!\nI can help you find your new car! Are you ready to get started?\nType yes to begin or q anytime to quit. ")
 
     if start_search == 'q':
         break 
 
     if str.lower(start_search) == "yes":
-        vehicle_type = input("Great! lets get started. What type of vehicle are you looking for?\nCar, truck, or SUV? ")
-    type.append(vehicle_type)
-    print (type)
+        veh_type = input("Great! lets get started. What type of vehicle are you looking for?\nCar, truck, or SUV? ")
+    vehicle_type.append(veh_type)
+    print (vehicle_type)
     
     if start_search == 'q':
         break 
     
     if str.lower(start_search) == "yes":
-        num_doors = input("How many doors, 2 or 4?\nPlease enter 2 or 4. ")
+        num_doors = input("How many doors, 2 or 4?\nPlease enter 2D or 4D. ")
     number_doors.append(num_doors)    
     print(number_doors)
     
@@ -32,7 +43,7 @@ while ez_search:
         break 
 
     if str.lower(start_search) == "yes":
-        drive_type = input("Would you like all wheel drive or 2 wheel drive?\nPlease enter AWD or 2WD. ")
+        drive_type = input("Would you like four wheel drive, front wheel drive, or rear wheel drive?\nPlease enter 4WD, FWD, or RWD. ")
     drive.append(drive_type)
     print(drive)    
 
@@ -46,3 +57,23 @@ while ez_search:
 
          
 print("Thank you for using EZ Auto Search!")
+
+base_url =  "https://www.neilhuffman.com/searchused.aspx?campaignid=11473286766&adgroupid=113104937998&keyword=%2Bused%20%2Bauto&gclid=CjwKCAjwuIWHBhBDEiwACXQYscZHj-vjUdI_wGzL4Ge5tOUHhH2W17pYYnHoU0JVmgEImnBU0iQ2uRoC9CcQAvD_BwE&pt=1"
+response = get(base_url, headers=headers)
+html_soup = BeautifulSoup(response.text, 'html.parser')
+content_list = html_soup.find_all('div', attrs={'class': 'row row-offcanvas row-offcanvas-left margin-top-2x'})
+#print(content_list)
+
+basic_info = []
+for item in content_list:
+    basic_info.append(item.find_all('div', attrs={'class': 'row srpVehicle hasVehicleInfo'}))
+
+#print(basic_info)
+
+def get_names(basic_info):
+    names = []
+    for item in basic_info:
+        for i in item:
+            names.append(i.find_all("li", attrs = {"class" : "row srpVehicle hasVehicleInfo"})[0].text.strip())
+    return names
+
