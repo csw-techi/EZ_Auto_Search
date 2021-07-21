@@ -58,22 +58,43 @@ while ez_search:
          
 print("Thank you for using EZ Auto Search!")
 
-base_url =  "https://www.neilhuffman.com/searchused.aspx?campaignid=11473286766&adgroupid=113104937998&keyword=%2Bused%20%2Bauto&gclid=CjwKCAjwuIWHBhBDEiwACXQYscZHj-vjUdI_wGzL4Ge5tOUHhH2W17pYYnHoU0JVmgEImnBU0iQ2uRoC9CcQAvD_BwE&pt=1"
-response = get(base_url, headers=headers)
-html_soup = BeautifulSoup(response.text, 'html.parser')
-content_list = html_soup.find_all('div', attrs={'class': 'row row-offcanvas row-offcanvas-left margin-top-2x'})
-#print(content_list)
-
-basic_info = []
-for item in content_list:
-    basic_info.append(item.find_all('div', attrs={'class': 'row srpVehicle hasVehicleInfo'}))
-
-#print(basic_info)
+def get_basic_info(content_list):
+    basic_info = []
+    for item in content_list:
+        basic_info.append(item.find_all('div', attrs={'class': 'row srpVehicle hasVehicleInfo'}))
+    return basic_info
 
 def get_names(basic_info):
     names = []
     for item in basic_info:
         for i in item:
-            names.append(i.find_all("li", attrs = {"class" : "row srpVehicle hasVehicleInfo"})[0].text.strip())
+            names.append(i.find_all("li", attrs = {"class" : "bodyStyleDisplay"})[0].text.strip())
     return names
+
+names = []
+
+for i in range(9):
+    base_url =  "https://www.neilhuffman.com/searchused.aspx?campaignid=11473286766&adgroupid=113104937998&keyword=%2Bused%20%2Bauto&gclid=CjwKCAjwuIWHBhBDEiwACXQYscZHj-vjUdI_wGzL4Ge5tOUHhH2W17pYYnHoU0JVmgEImnBU0iQ2uRoC9CcQAvD_BwE&pt=1"
+    response = get(base_url, headers=headers)
+    html_soup = BeautifulSoup(response.text, 'html.parser')
+    content_list = html_soup.find_all('div', attrs={'class': 'row row-offcanvas row-offcanvas-left margin-top-2x'})
+    
+    basic_info = get_basic_info(content_list)
+    names1 = get_names(basic_info)
+   
+    names.extend(names1)
+   
+# basic_info = []
+# for item in content_list:
+#     basic_info.append(item.find_all('div', attrs={'class': 'row srpVehicle hasVehicleInfo'}))
+# print(basic_info)    
+    
+data = pd.DataFrame(names)
+data.columns = ["name"]
+# data.name[2]
+
+
+data.head()
+data.drop_duplicates()
+data.to_csv('results_list.csv')
 
