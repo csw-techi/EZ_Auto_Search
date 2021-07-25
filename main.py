@@ -10,11 +10,11 @@ headers = ({'User-Agent':
 
 
 vehicle_type = []
-#car, truck, suv
+#car, truck, suv, van
 number_doors = []
 #2D, 4D
 drive = []
-#awd, 2wd
+#awd, 2wd, rwd
 color = []
 #red, white, blue, grey, black, white
 
@@ -55,46 +55,114 @@ while ez_search:
     color.append(vehicle_color)
     print(color)
 
-         
 print("Thank you for using EZ Auto Search!")
 
 def get_basic_info(content_list):
     basic_info = []
     for item in content_list:
-        basic_info.append(item.find_all('div', attrs={'class': 'row srpVehicle hasVehicleInfo'}))
+        basic_info.append(item.find_all('div', attrs = {'class': 'col-md-12 col-sm-12 hidden-xs'}))
     return basic_info
+
+def get_basic_info2(content_list):
+    basic_info2 = []
+    for item in content_list:
+        basic_info2.append(item.find_all('div', attrs = {'class': 'col-sm-6 col-sm-pull-6 col-xs-12'}))
+    return basic_info2
+
+def get_basic_info3(content_list):
+    basic_info3 = []
+    for item in content_list:
+        basic_info3.append(item.find_all('div', attrs = {'class': 'col-sm-6 col-sm-push-6 hidden-xs'}))
+    return basic_info3
 
 def get_names(basic_info):
     names = []
     for item in basic_info:
         for i in item:
-            names.append(i.find_all("li", attrs = {"class" : "bodyStyleDisplay"})[0].text.strip())
+            names.append(i.find_all("span", attrs = {"class" : "notranslate"})[0].text.strip())
     return names
 
+def get_style(basic_info2):
+    style = []
+    for item in basic_info2:
+        for i in item:
+            style.append(i.find_all("li", attrs = {"class" : "bodyStyleDisplay"})[0].text.strip())
+    return style
+
+def get_drivetrain(basic_info2):
+    drivetrain = []
+    for item in basic_info2:
+        for i in item:
+            drivetrain.append(i.find_all("li", attrs = {"class" : "driveTrainDisplay"})[0].text.strip())
+    return drivetrain
+
+def get_mileage(basic_info2):
+    mileage = []
+    for item in basic_info2:
+        for i in item:
+            mileage.append(i.find_all("li", attrs = {"class" : "mileageDisplay"})[0].text.strip())
+    return mileage
+    
+def get_engine(basic_info2):
+    engine = []
+    for item in basic_info2:
+        for i in item:
+            engine.append(i.find_all("li", attrs = {"class" : "engineDisplay"})[0].text.strip())
+    return engine
+
+def get_price(basic_info3):
+    price = []
+    for item in basic_info3:
+        for i in item:
+            price.append(i.find_all("span", attrs = {"class" : "pull-right primaryPrice"})[0].text.strip())
+    return price
+
+page_number = 1
 names = []
+style = []
+drivetrain = []
+mileage = []
+engine = []
+price = []
 
 for i in range(9):
-    base_url =  "https://www.neilhuffman.com/searchused.aspx?campaignid=11473286766&adgroupid=113104937998&keyword=%2Bused%20%2Bauto&gclid=CjwKCAjwuIWHBhBDEiwACXQYscZHj-vjUdI_wGzL4Ge5tOUHhH2W17pYYnHoU0JVmgEImnBU0iQ2uRoC9CcQAvD_BwE&pt=1"
+    base_url =  "https://www.neilhuffman.com/searchused.aspx?campaignid=11473286766&adgroupid=113104937998&keyword=%2Bused%20%2Bauto&gclid=CjwKCAjwuIWHBhBDEiwACXQYscZHj-vjUdI_wGzL4Ge5tOUHhH2W17pYYnHoU0JVmgEImnBU0iQ2uRoC9CcQAvD_BwE"
     response = get(base_url, headers=headers)
     html_soup = BeautifulSoup(response.text, 'html.parser')
-    content_list = html_soup.find_all('div', attrs={'class': 'row row-offcanvas row-offcanvas-left margin-top-2x'})
+    content_list = html_soup.find_all('div', attrs = {'class': 'row srpVehicle hasVehicleInfo'})
     
     basic_info = get_basic_info(content_list)
+    basic_info2 = get_basic_info2(content_list)
+    basic_info3 = get_basic_info3(content_list)
     names1 = get_names(basic_info)
-   
+    style1 = get_style(basic_info2)
+    drive1 = get_drivetrain(basic_info2)
+    mileage1 = get_mileage(basic_info2)
+    engine1 = get_engine(basic_info2)
+    price1 = get_price(basic_info3)
+
+# print(content_list)
     names.extend(names1)
-   
-# basic_info = []
-# for item in content_list:
-#     basic_info.append(item.find_all('div', attrs={'class': 'row srpVehicle hasVehicleInfo'}))
-# print(basic_info)    
+    style.extend(style1)
+    drivetrain.extend(drive1)
+    mileage.extend(mileage1)
+    engine.extend(engine1)
+    price.extend(price1)
+
     
-data = pd.DataFrame(names)
-data.columns = ["name"]
-# data.name[2]
+
+    page_number = page_number + 1
+    time.sleep(random.randint(1,2))
 
 
-data.head()
-data.drop_duplicates()
-data.to_csv('results_list.csv')
+# cols = ["Model", "Style", "Type", "Color"]
+# data = pd.DataFrame({"Model" : names, "Style": style, "Type": drivetrain, "Color": extcolor})[cols]
+# data[["Model", "Style", "Type", "Color"]] = data[["Model", "Style", "Type", "Color"]].apply(pd.to_numeric)
+# data.head()
+# data.to_csv('results_list.csv')
 
+a = {"Model" : names, "Body Style": style, "Drive Type": drivetrain, "Engine": engine, "Mileage": mileage, "Price": price}
+df = pd.DataFrame.from_dict(a, orient='index')
+df = df.transpose()
+# data.drop_duplicates()
+df.to_csv('results_list.csv')
