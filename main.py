@@ -27,39 +27,59 @@ while ez_search:
         break 
 
     if str.lower(start_search) == "yes":
-        veh_type = input("Great! lets get started. What type of vehicle are you looking for?\nCar, truck, van or SUV? ")
+        veh_type = input("Great! lets get started. What type of vehicle are you looking for?\n1. SUV\n2. Car\n3. Van\n4. Truck\nPlease enter the number of your choice. ")   
     vehicle_type.append(veh_type)
     print (vehicle_type)
     
-    if start_search == 'q':
+    # 1 = Sport Utility
+    # 2 = Sedan, Coupe
+    # 3 = Van
+    # 4 = Crew Cab, Super Crew
+     
+    if vehicle_type == 'q':
         break 
 
     if str.lower(start_search) == "yes":
-        drive_type = input("Would you like four wheel drive, front wheel drive, or rear wheel drive?\nPlease enter 4WD, FWD, or RWD. ")
+        drive_type = input("What drive type would you prefer?\n1. Front wheel drive\n2. Rear wheel drive\n3. All wheel drive\nPlease enter the number of your choice. ")
     vehicle_drive.append(drive_type)
     print(vehicle_drive)
    
+    # 1 = FWD
+    # 2 = RWD
+    # 3 = AWD 
+
     if drive_type == 'q':
         break
 
     if str.lower(start_search) == "yes":
-        veh_mileage = input("What's the max mileage you would prefer? ")
+        veh_mileage = input("What mileage would you prefer?\n1. 0-15k\n2. 16k-25k\n3. 26k-50k\n4. 51k-75k\n5. 76k-100+k\nPlease enter the number of your choice. ")
     vehicle_mileage.append(veh_mileage)    
-    print(veh_mileage)
+    print(vehicle_mileage)
     
+    # 1 = range(0-15999)
+    # 2 = range(16000-25999)
+    # 3 = range(26000-50999)
+    # 4 = range(51000-75999)
+    # 5 = range(76000-100000+)
+
     if veh_mileage == 'q':
         break 
 
     if str.lower(start_search) == "yes":
-        veh_price = input("What price range would you prefer? ")
+        veh_price = input("What price range would you prefer?\n1. 0-15k\n2. 16k-25k\n3. 26k-50k\n4. 51k-75k\n5. 76k-100k+\nPlease enter the number of your choice. ")
     vehicle_price.append(veh_price)
     print(vehicle_price)
 
-    if veh_price == 'q':
-        break
+    # 1 = range(0-15999)
+    # 2 = range(16000-25999)
+    # 3 = range(26000-50999)
+    # 4 = range(51000-75999)
+    # 5 = range(76000-100000+)
 
-else:
-    print("Thank you for using EZ Auto Search!")
+    if vehicle_price == 'q':
+        break
+    
+print("Thank you for using EZ Auto Search!")
 
 def find_car_attribute(html,html_tag, html_class, prefix):
     text = html.find_all(html_tag, attrs={"class": html_class})[0].text.strip()
@@ -171,27 +191,26 @@ a = {"Model" : names, "Body_Style": style, "Drive_Type": drivetrain, "Engine": e
 df = pd.DataFrame.from_dict(a, orient='index')
 df = df.transpose()
 
-df1 = df.query('Drive_Type.str.contains("FWD")' and 'Body_Style.str.contains("Sedan")')
-# df2 = df.query('Drive_Type == FWD')
+df.query('Drive_Type.str.contains("FWD")' and 'Body_Style.str.contains("Sedan")', inplace = True)
+# df = df.query('Drive_Type == FWD')
 # df.query('Price > 50,000')
-df1.drop_duplicates(inplace=True)
-df1.to_csv('results_list.csv')
+df.drop_duplicates(inplace=True)
+df.to_csv('results_list.csv')
 print("")
 print("Here are the vehicles for sale at Neil Huffman based on your input.\nA csv file with these results called results_list.csv is available locally.")
 print("")
-print(df1)
+print(df)
 print("")
 print("Thank you for using EZ Auto Search!")
 
-# issues
+#issues#
+# Change user choice to key words to query df
 
 # query dataframe with user input
 
-#change user input to a list of options. User enters 1,2,3,4 etc
-#1. Sedan
-#2. Sport Utility
-#3. Truck
-#4. Van
+# fix issue if user quits df is not created
+
+
 
 
 
