@@ -11,16 +11,12 @@ headers = ({'User-Agent':
 
 vehicle_type = []
 #car, truck, suv, van
-number_doors = []
-#2D, 4D
-drive = []
+vehicle_drive = []
 #awd, 2wd, rwd
-# color = []
-#red, white, blue, grey, black, white
-mileage = []
+vehicle_mileage = []
 #0-25k, 26k-50k, 51k-75k, 76-100k
-price = []
-#0-15k, 16k-25k, 26k-50k, 51k-75k, 76k-100k
+vehicle_price = []
+#0-15k, 16k-25k, 26k-50k, 51k-75k, 76k-100+k
 
 ez_search = True
 
@@ -39,35 +35,38 @@ while ez_search:
         break 
 
     if str.lower(start_search) == "yes":
-        mileage = input("How many doors, 2 or 4?\nPlease enter 2D or 4D. ")
-    number_doors.append(num_doors)    
-    print(number_doors)
-    
-    if num_doors == 'q':
-        break 
-    
-    # if str.lower(start_search) == "yes":
-    #     num_doors = input("How many doors, 2 or 4?\nPlease enter 2D or 4D. ")
-    # number_doors.append(num_doors)    
-    # print(number_doors)
-    
-    # if num_doors == 'q':
-    #     break 
-
-    if str.lower(start_search) == "yes":
         drive_type = input("Would you like four wheel drive, front wheel drive, or rear wheel drive?\nPlease enter 4WD, FWD, or RWD. ")
-    drive.append(drive_type)
-    print(drive)    
-
+    vehicle_drive.append(drive_type)
+    print(vehicle_drive)
+   
     if drive_type == 'q':
         break
 
-    # if str.lower(start_search) == "yes":
-    #     vehicle_color = input("What color vehicle do you prefer?\nPlease enter red, white, blue, grey, black, or white. ")
-    # color.append(vehicle_color)
-    # print(color)
+    if str.lower(start_search) == "yes":
+        veh_mileage = input("What's the max mileage you would prefer? ")
+    vehicle_mileage.append(veh_mileage)    
+    print(veh_mileage)
+    
+    if veh_mileage == 'q':
+        break 
 
-print("Thank you for using EZ Auto Search!")
+    if str.lower(start_search) == "yes":
+        veh_price = input("What price range would you prefer? ")
+    vehicle_price.append(veh_price)
+    print(vehicle_price)
+
+    if veh_price == 'q':
+        break
+
+else:
+    print("Thank you for using EZ Auto Search!")
+
+def find_car_attribute(html,html_tag, html_class, prefix):
+    text = html.find_all(html_tag, attrs={"class": html_class})[0].text.strip()
+    return strip_prefix(text, prefix)
+
+def strip_prefix(text, prefix):
+    return text[len(prefix):]
 
 def get_basic_info(content_list):
     basic_info = []
@@ -98,43 +97,40 @@ def get_style(basic_info2):
     style = []
     for item in basic_info2:
         for i in item:
-            style.append(i.find_all("li", attrs = {"class" : "bodyStyleDisplay"})[0].text.strip("  "))
+            attr = find_car_attribute(i, "li", "bodyStyleDisplay", "Body Style: ")
+            style.append(attr)
     return style
 
 def get_drivetrain(basic_info2):
     drivetrain = []
-    # drivetrain1 = [x.remove("Drive") for x in drivetrain]
-    # words = ['Drive']
     for item in basic_info2:
         for i in item:
-            drivetrain.append(i.find_all("li", attrs = {"class" : "driveTrainDisplay"})[0].text.strip())
-
-            # drivetrain.replace('Drive', '')
-        # for i in list(drivetrain):
-        #     if i in words:
-        #         drivetrain.remove(words)
-
-    return drivetrain
+                attr = find_car_attribute(i, "li", "driveTrainDisplay", "Drive Type: ")
+                drivetrain.append(attr) 
+    return drivetrain     
 
 def get_mileage(basic_info2):
     mileage = []
     for item in basic_info2:
         for i in item:
-            mileage.append(i.find_all("li", attrs = {"class" : "mileageDisplay"})[0].text.strip("Mileage: "))
+            attr = find_car_attribute(i, "li", "mileageDisplay", "Mileage: ")
+            mileage.append(attr)
     return mileage
     
 def get_engine(basic_info2):
     engine = []
     for item in basic_info2:
         for i in item:
-            engine.append(i.find_all("li", attrs = {"class" : "engineDisplay"})[0].text.strip("Engine: "))
+            attr = find_car_attribute(i, "li", "engineDisplay", "Engine: ")
+            engine.append(attr)
     return engine
 
 def get_price(basic_info3):
     price = []
     for item in basic_info3:
         for i in item:
-            price.append(i.find_all("span", attrs = {"class" : "pull-right primaryPrice"})[0].text.strip("$"))
+            attr = find_car_attribute(i, "span", "pull-right primaryPrice", "$")
+            price.append(attr)
     return price
 
 page_number = 1
@@ -161,7 +157,6 @@ for i in range(9):
     engine1 = get_engine(basic_info2)
     price1 = get_price(basic_info3)
 
-# print(content_list)
     names.extend(names1)
     style.extend(style1)
     drivetrain.extend(drive1)
@@ -172,35 +167,31 @@ for i in range(9):
     page_number = page_number + 1
     time.sleep(random.randint(1,2))
 
-
-# cols = ["Model", "Style", "Type", "Color"]
-# data = pd.DataFrame({"Model" : names, "Style": style, "Type": drivetrain, "Color": extcolor})[cols]
-# data[["Model", "Style", "Type", "Color"]] = data[["Model", "Style", "Type", "Color"]].apply(pd.to_numeric)
-# data.head()
-# data.to_csv('results_list.csv')
-
 a = {"Model" : names, "Body_Style": style, "Drive_Type": drivetrain, "Engine": engine, "Mileage": mileage, "Price": price}
 df = pd.DataFrame.from_dict(a, orient='index')
 df = df.transpose()
 
-df.query('Drive_Type.str.contains("FWD")' and 'Body_Style.str.contains("Sedan")', inplace = True)
+df1 = df.query('Drive_Type.str.contains("FWD")' and 'Body_Style.str.contains("Sedan")')
 # df2 = df.query('Drive_Type == FWD')
 # df.query('Price > 50,000')
-df.drop_duplicates(inplace=True)
-df.to_csv('results_list.csv')
+df1.drop_duplicates(inplace=True)
+df1.to_csv('results_list.csv')
 print("")
 print("Here are the vehicles for sale at Neil Huffman based on your input.\nA csv file with these results called results_list.csv is available locally.")
 print("")
-print(df)
+print(df1)
 print("")
 print("Thank you for using EZ Auto Search!")
 
-#issues
+# issues
+
+# query dataframe with user input
+
 #change user input to a list of options. User enters 1,2,3,4 etc
 #1. Sedan
 #2. Sport Utility
 #3. Truck
 #4. Van
 
-# query dataframe with user input
+
 
