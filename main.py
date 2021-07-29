@@ -1,8 +1,9 @@
 from bs4 import BeautifulSoup
 from requests import get
-# import pandas as pd
+import pandas as pd
 import time
 import random
+# import numpy as np
 
 headers = ({'User-Agent':
             'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit\
@@ -47,7 +48,7 @@ while ez_search:
    
     # 1 = FWD
     # 2 = RWD
-    # 3 = AWD 
+    # 3 = AWD
 
     if drive_type == 'q':
         break
@@ -166,7 +167,7 @@ price = []
 
 for i in range(9):
     # feature - create a scraper
-    base_url =  "https://www.neilhuffman.com/searchused.aspx?campaignid=11473286766&adgroupid=113104937998&keyword=%2Bused%20%2Bauto&gclid=CjwKCAjwuIWHBhBDEiwACXQYscZHj-vjUdI_wGzL4Ge5tOUHhH2W17pYYnHoU0JVmgEImnBU0iQ2uRoC9CcQAvD_BwE"
+    base_url =  "https://www.neilhuffman.com/searchused.aspx?campaignid=11473286766&adgroupid=113104937998&keyword=%2Bused%20%2Bauto&gclid=CjwKCAjwuIWHBhBDEiwACXQYscZHj-vjUdI_wGzL4Ge5tOUHhH2W17pYYnHoU0JVmgEImnBU0iQ2uRoC9CcQAvD_BwE&pt={}".format(page_number)
     response = get(base_url, headers=headers)
     html_soup = BeautifulSoup(response.text, 'html.parser')
     content_list = html_soup.find_all('div', attrs = {'class': 'row srpVehicle hasVehicleInfo'})
