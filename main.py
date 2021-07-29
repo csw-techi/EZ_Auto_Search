@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 from requests import get
-import pandas as pd
+# import pandas as pd
 import time
 import random
 
@@ -8,7 +8,7 @@ headers = ({'User-Agent':
             'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit\
 /537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36'})
 
-
+# feature - create a list 
 vehicle_type = []
 #car, truck, suv, van
 vehicle_drive = []
@@ -19,6 +19,8 @@ vehicle_price = []
 #0-15k, 16k-25k, 26k-50k, 51k-75k, 76k-100+k
 
 ez_search = True
+
+# feature - create a master loop
 
 while ez_search:
     start_search =  input("\nWelcome to EZ Auto Search!\nI can help you find your new car! Are you ready to get started?\nType yes to begin or q anytime to quit. ")
@@ -80,6 +82,8 @@ while ez_search:
         break
     
 print("Thank you for using EZ Auto Search!")
+
+# feature - create 3 or more functions
 
 def find_car_attribute(html,html_tag, html_class, prefix):
     text = html.find_all(html_tag, attrs={"class": html_class})[0].text.strip()
