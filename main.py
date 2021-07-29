@@ -21,7 +21,6 @@ vehicle_price = []
 ez_search = True
 
 # feature - create a master loop
-
 while ez_search:
     start_search =  input("\nWelcome to EZ Auto Search!\nI can help you find your new car! Are you ready to get started?\nType yes to begin or q anytime to quit. ")
 
@@ -166,6 +165,7 @@ engine = []
 price = []
 
 for i in range(9):
+    # feature - create a scraper
     base_url =  "https://www.neilhuffman.com/searchused.aspx?campaignid=11473286766&adgroupid=113104937998&keyword=%2Bused%20%2Bauto&gclid=CjwKCAjwuIWHBhBDEiwACXQYscZHj-vjUdI_wGzL4Ge5tOUHhH2W17pYYnHoU0JVmgEImnBU0iQ2uRoC9CcQAvD_BwE"
     response = get(base_url, headers=headers)
     html_soup = BeautifulSoup(response.text, 'html.parser')
