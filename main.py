@@ -3,7 +3,6 @@ from requests import get
 import pandas as pd
 import time
 import random
-# import numpy as np
 
 headers = ({'User-Agent':
             'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit\
