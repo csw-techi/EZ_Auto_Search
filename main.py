@@ -235,8 +235,3 @@ print("")
 print(df)
 print("")
 print("Thank you for using EZ Auto Search!")
-
-
-
-
-
