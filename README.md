@@ -1,7 +1,7 @@
 
 # Welcome to EZ_Auto_Search
 
-This is my project for my Code Louisville Python class. My application helps users find a new car based on their input. The app will display the results from Neil Huffman's website and export a csv file to the user's directory.
+This is my project for the 2021 Code Louisville Python class. My application helps users find a new car based on their input. The app will display the results from Neil Huffman's website and export a csv file to the user's directory.
 
 ## Project Submission:
 Submitted on 07/29/2021

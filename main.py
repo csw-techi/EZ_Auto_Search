@@ -9,79 +9,108 @@ headers = ({'User-Agent':
             'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit\
 /537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36'})
 
-# feature - create a list 
-vehicle_type = []
-#car, truck, suv, van
-vehicle_drive = []
-#awd, 2wd, rwd
-vehicle_mileage = []
-#0-25k, 26k-50k, 51k-75k, 76-100k
-vehicle_price = []
-#0-15k, 16k-25k, 26k-50k, 51k-75k, 76k-100+k
-
 ez_search = True
 
 # feature - create a master loop
 while ez_search:
-    start_search =  input("\nWelcome to EZ Auto Search!\nI can help you find your new car! Are you ready to get started?\nType yes to begin or q anytime to quit. ")
+    start_search =  input("\nWelcome to EZ Auto Search!\nI can help you find your new car! Are you ready to get started?\nEnter yes to begin or q to quit anytime. ")
 
     if start_search == 'q':
-        break 
+        print("Never quit! Thank you for using EZ Auto Search!")
+        exit() 
 
     if str.lower(start_search) == "yes":
-        veh_type = input("Great! lets get started. What type of vehicle are you looking for?\n1. SUV\n2. Car\n3. Van\n4. Truck\nPlease enter the number of your choice. ")   
-    vehicle_type.append(veh_type)
-    print (vehicle_type)
+        veh_type = input("Great! lets get started. What type of vehicle are you looking for?\n1. SUV\n2. Car\n3. Van\n4. Truck\nPlease enter the number of your choice. ")
+        print("You chose {}!".format(veh_type))
     
-    # 1 = Sport Utility
-    # 2 = Sedan, Coupe
-    # 3 = Van
-    # 4 = Crew Cab, Super Crew
+    if veh_type == '1':
+        veh_type = 'Sport Utility'
+
+    if veh_type == '2':
+        veh_type = 'Sedan'    
+    
+    if veh_type == '3':
+        veh_type = 'Van'
+
+    if veh_type == '4':
+        veh_type = 'Crew Cab'
      
-    if vehicle_type == 'q':
-        break 
+    if veh_type == 'q':
+        print("Never quit! Thank you for using EZ Auto Search!")
+        exit() 
 
     if str.lower(start_search) == "yes":
         drive_type = input("What drive type would you prefer?\n1. Front wheel drive\n2. Rear wheel drive\n3. All wheel drive\nPlease enter the number of your choice. ")
-    vehicle_drive.append(drive_type)
-    print(vehicle_drive)
-   
-    # 1 = FWD
-    # 2 = RWD
-    # 3 = AWD
+        print("You chose {}!".format(drive_type))
+    if drive_type == '1':
+        drive_type = 'FWD'
+
+    if drive_type == '2':
+        drive_type = 'RWD'
+
+    if drive_type == '3':
+        drive_type = 'AWD'
 
     if drive_type == 'q':
-        break
+        print("Never quit! Thank you for using EZ Auto Search!")
+        exit()
 
     if str.lower(start_search) == "yes":
-        veh_mileage = input("What mileage would you prefer?\n1. 0-15k\n2. 16k-25k\n3. 26k-50k\n4. 51k-75k\n5. 76k-100+k\nPlease enter the number of your choice. ")
-    vehicle_mileage.append(veh_mileage)    
-    print(vehicle_mileage)
-    
-    # 1 = range(0-15999)
-    # 2 = range(16000-25999)
-    # 3 = range(26000-50999)
-    # 4 = range(51000-75999)
-    # 5 = range(76000-100000+)
+        veh_mileage = input("What's the maximum mileage would you prefer?\n1. 15k\n2. 25k\n3. 50k\n4. 75k\n5. 100\nPlease enter the number of your choice. ")
+        print("You chose {}!".format(veh_mileage))
 
+    if veh_mileage == '1':
+        veh_mileage = '15000'
+
+    if veh_mileage == '2':
+        veh_mileage = '25000'   
+   
+    if veh_mileage == '3':
+        veh_mileage = '50000'
+
+    if veh_mileage == '4':
+        veh_mileage = '75000'
+
+    if veh_mileage == '5':
+        veh_mileage = '100000'
+    
     if veh_mileage == 'q':
-        break 
+        print("Never quit! Thank you for using EZ Auto Search!")
+        exit() 
 
     if str.lower(start_search) == "yes":
-        veh_price = input("What price range would you prefer?\n1. 0-15k\n2. 16k-25k\n3. 26k-50k\n4. 51k-75k\n5. 76k-100k+\nPlease enter the number of your choice. ")
-    vehicle_price.append(veh_price)
-    print(vehicle_price)
+        veh_price = input("What's the max price you would like to pay?\n1. 15k\n2. 25k\n3. 50k\n4. 75k\n5. 100k\nPlease enter the number of your choice. ")
+        print("You chose {}!\n".format(veh_price))
 
-    # 1 = range(0-15999)
-    # 2 = range(16000-25999)
-    # 3 = range(26000-50999)
-    # 4 = range(51000-75999)
-    # 5 = range(76000-100000+)
+    if veh_price == '1':
+        veh_price = '15000'
 
-    if vehicle_price == 'q':
-        break
+    if veh_price == '2':
+        veh_price = '25000'    
+   
+    if veh_price == '3':
+        veh_price = '50000'
+
+    if veh_price == '4':
+        veh_price = '75,000'
+
+    if veh_price == '5':
+        veh_price = '100,000'
     
-print("Thank you for using EZ Auto Search!")
+    if veh_price == 'q':
+       print("Never quit! Thank you for using EZ Auto Search!")
+       exit()
+
+    else: 
+        choice = input("Would you like to change your choices?\nPlease enter yes or no. ")
+    if choice == 'yes':
+        start_search = True
+    if choice == 'no':
+        break
+    if choice == 'q':
+       print("Never quit! Thank you for using EZ Auto Search!")
+       exit()
+print("Please wait as we look for your new car....")
 
 # feature - create 3 or more functions
 
@@ -90,7 +119,7 @@ def find_car_attribute(html,html_tag, html_class, prefix):
     return strip_prefix(text, prefix)
 
 def strip_prefix(text, prefix):
-    return text[len(prefix):]
+    return text[len(prefix):]   
 
 def get_basic_info(content_list):
     basic_info = []
@@ -158,6 +187,7 @@ def get_price(basic_info3):
     return price
 
 page_number = 1
+# feature - create a list 
 names = []
 style = []
 drivetrain = []
@@ -177,18 +207,18 @@ for i in range(9):
     basic_info3 = get_basic_info3(content_list)
     names1 = get_names(basic_info)
     style1 = get_style(basic_info2)
-    drive1 = get_drivetrain(basic_info2)
+    drivetrain1 = get_drivetrain(basic_info2)
     mileage1 = get_mileage(basic_info2)
     engine1 = get_engine(basic_info2)
     price1 = get_price(basic_info3)
 
     names.extend(names1)
     style.extend(style1)
-    drivetrain.extend(drive1)
+    drivetrain.extend(drivetrain1)
     mileage.extend(mileage1)
     engine.extend(engine1)
     price.extend(price1)
-
+    
     page_number = page_number + 1
     time.sleep(random.randint(1,2))
 
@@ -196,24 +226,16 @@ a = {"Model" : names, "Body_Style": style, "Drive_Type": drivetrain, "Engine": e
 df = pd.DataFrame.from_dict(a, orient='index')
 df = df.transpose()
 
-df.query('Drive_Type.str.contains("FWD")' and 'Body_Style.str.contains("Sedan")', inplace = True)
-# df = df.query('Drive_Type == FWD')
-# df.query('Price > 50,000')
+df.query("Drive_Type == @drive_type",inplace=True)
+# Query needs work, I could not get it to work properly with all user input. TypeError: unsupported operand type(s) for &: 'str' and 'str'
 df.drop_duplicates(inplace=True)
-df.to_csv('results_list.csv')
+df.to_csv('ez_auto_search.csv')
 print("")
-print("Here are the vehicles for sale at Neil Huffman based on your input.\nA csv file with these results called results_list.csv is available locally.")
+print("Here are the vehicles for sale at Neil Huffman based on your input.\nA csv file with these results called ez_auto_search.csv is available locally.")
 print("")
 print(df)
 print("")
 print("Thank you for using EZ Auto Search!")
-
-#issues#
-# Change user choice to key words to query df
-
-# query dataframe with user input
-
-# fix issue if user quits df is not created
 
 
 
