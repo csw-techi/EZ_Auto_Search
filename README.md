@@ -12,7 +12,7 @@ Submitted on 07/29/2021
 3. Create and call at least 3 functions or methods, at least one of which must return a value that is used somewhere else in your code.
 4. Implement a “scraper” that can be fed a type of file or URL and pull information off of it.
 
-## Required packages to run main.py
+## Required packages to run main.py:
 1. requests
 2. pandas
 3. beautiful soup
